@@ -2,38 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Shopping List</title>
 </head>
 <body>
-   <div id="liste"></div>
+    <form action="javascript:void(0)">
+        <input id="inpItem" type="text">
+        <input id="inpSubmit" type="submit" value="Add Item">
+        <input id="inpRemoveLast" type="button" value="Remove Last">
+    </form>
     
-</body>
-
+    <ul id="listContainer"></ul>
+    
+    <input id="inpRemoveChecked" type="button" value="Remove Checked">
+    
+    
 <script>
-    let handleliste = ["Epler", "Appelsiner", "Sjokolade", "Sjokomelk"];
-    handleliste[4] = "Skinke";
-    handleliste.push("Smør");
-    handleliste[3] = "Litago jordbær";
+    const inpItem = document.getElementById("inpItem");
+    const inpSubmit = document.getElementById("inpSubmit");
+    const inpRemoveLast = document.getElementById("inpRemoveLast");
+    const listCont = document.getElementById("listContainer");
+    const inpRemoveChecked = document.getElementById("inpRemoveChecked");
     
-    handleliste.pop();
-    
-    console.log(handleliste.indexOf("Vaskemiddel"));
+    let shoppingList = ["Apples", "Milk", "Bread", "Milk Again"];
     
     
-
-    /*
-
-    */
+    const printList = function() {
+        listCont.innerHTML = "";
+        for (i = 0; i < shoppingList.length; i++){
+            listCont.innerHTML += `<li><input type="checkbox">${shoppingList[i]}</li>`;
+        };
+    };
     
-    let listeDiv = document.getElementById("liste");
+    const addItem = function() {
+        if (inpItem.value) {
+            shoppingList.push(inpItem.value);
+        };
+        printList();
+        inpItem.value = "";
+    };
     
-        for(let i = 0; i<handleliste.length; i++){
-            
-            listeDiv.innerHTML += handleliste[i] + "<br>";
-    }
- 
+    const removeLast = function() {
+        shoppingList.pop();
+        printList();
+    };
     
+    const removeChecked = function() {
+        let items = document.querySelectorAll("#listContainer li");
+        let spliceList = [];
+        for (i = 0; i < shoppingList.length; i++) {
+            if (items[i].querySelector("input[type='checkbox']").checked) {
+                spliceList.push(shoppingList[i]);
+            };
+        };
+        for (i = 0; i < spliceList.length; i++) {
+            shoppingList.splice(shoppingList.indexOf(spliceList[i]), 1);
+        };
+        printList();
+    };
+    
+    printList();
+    
+    inpSubmit.addEventListener("click", addItem);
+    inpRemoveLast.addEventListener("click", removeLast);
+    inpRemoveChecked.addEventListener("click", removeChecked);
     
 </script>
-
+</body>
 </html>
